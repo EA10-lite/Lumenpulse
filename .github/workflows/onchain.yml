@@ -1,0 +1,36 @@
+name: Onchain CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'apps/onchain/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'apps/onchain/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./apps/onchain
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
+
+    - name: Install Soroban CLI
+      run: cargo install --locked soroban-cli --version 22.0.1
+
+    - name: Build Contracts
+      run: cargo build --target wasm32-unknown-unknown --release
+
+    - name: Run Tests
+      run: cargo test

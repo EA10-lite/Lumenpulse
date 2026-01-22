@@ -16,6 +16,15 @@ This service handles compute-heavy tasks such as sentiment analysis and market t
 
 ### 2. Create and Activate Virtual Environment
 
+**On Windows:**
+```powershell
+# Create virtual environment (using Python Launcher)
+py -m venv venv
+
+# Activate virtual environment
+.\venv\Scripts\activate
+```
+
 **On macOS/Linux:**
 ```bash
 python3 -m venv venv
