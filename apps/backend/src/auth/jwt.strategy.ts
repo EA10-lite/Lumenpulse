@@ -23,10 +23,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly configService: ConfigService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET'),
-    });
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    ignoreExpiration: false,
+    secretOrKey: configService.getOrThrow<string>('JWT_SECRET'),
+  });
+
   }
 
   async validate(payload: JwtPayload): Promise<User> {
@@ -40,7 +41,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('User not found');
     }
 
-    if (!user.isActive) {
+    if (!user.id) {
       throw new UnauthorizedException('User account is inactive');
     }
 

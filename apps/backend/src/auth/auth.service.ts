@@ -209,18 +209,18 @@ export class AuthService {
 
     // Find or create user with this Stellar public key
     let user = await this.userRepository.findOne({
-      where: { stellarPublicKey: publicKey },
+      where: { id: publicKey },
     });
 
     if (!user) {
       user = this.userRepository.create({
-        stellarPublicKey: publicKey,
-        lastLogin: new Date(),
+        id: publicKey,
+        updatedAt: new Date(),
       });
       await this.userRepository.save(user);
       this.logger.log(`New user created with public key: ${publicKey}`);
     } else {
-      user.lastLogin = new Date();
+      user.updatedAt = new Date();
       await this.userRepository.save(user);
       this.logger.log(`Existing user logged in: ${user.id}`);
     }
@@ -239,10 +239,8 @@ export class AuthService {
       token,
       user: {
         id: user.id,
-        stellarPublicKey: user.stellarPublicKey,
-        createdAt: user.createdAt,
-        username: user.username,
-        profile: user.profile,
+        passwordHash: user.id,
+        createdAt: user.createdAt
       },
     };
   }
