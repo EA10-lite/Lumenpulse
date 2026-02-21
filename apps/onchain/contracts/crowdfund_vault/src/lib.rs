@@ -24,11 +24,11 @@ impl CrowdfundVaultContract {
             .instance()
             .get(&DataKey::Admin)
             .ok_or(CrowdfundError::NotInitialized)?;
-        
+
         if caller != &stored_admin {
             return Err(CrowdfundError::Unauthorized);
         }
-        
+
         caller.require_auth();
         Ok(())
     }
@@ -75,7 +75,11 @@ impl CrowdfundVaultContract {
         owner.require_auth();
 
         // Check Emergency Pause State (single read)
-        let is_paused: bool = env.storage().instance().get(&DataKey::Paused).unwrap_or(false);
+        let is_paused: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Paused)
+            .unwrap_or(false);
         if is_paused {
             return Err(CrowdfundError::ContractPaused);
         }
@@ -150,7 +154,11 @@ impl CrowdfundVaultContract {
         user.require_auth();
 
         // Check Emergency Pause State (single read)
-        let is_paused: bool = env.storage().instance().get(&DataKey::Paused).unwrap_or(false);
+        let is_paused: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Paused)
+            .unwrap_or(false);
         if is_paused {
             return Err(CrowdfundError::ContractPaused);
         }
@@ -252,7 +260,11 @@ impl CrowdfundVaultContract {
         Self::verify_admin(&env, &admin)?;
 
         // Check Emergency Pause State (single read)
-        let is_paused: bool = env.storage().instance().get(&DataKey::Paused).unwrap_or(false);
+        let is_paused: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Paused)
+            .unwrap_or(false);
         if is_paused {
             return Err(CrowdfundError::ContractPaused);
         }
@@ -282,7 +294,11 @@ impl CrowdfundVaultContract {
         }
 
         // Check Emergency Pause State (single read)
-        let is_paused: bool = env.storage().instance().get(&DataKey::Paused).unwrap_or(false);
+        let is_paused: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Paused)
+            .unwrap_or(false);
         if is_paused {
             return Err(CrowdfundError::ContractPaused);
         }
@@ -696,7 +712,11 @@ impl CrowdfundVaultContract {
         Self::verify_admin(&env, &admin)?;
 
         // Check current pause state (single read)
-        let is_paused: bool = env.storage().instance().get(&DataKey::Paused).unwrap_or(false);
+        let is_paused: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Paused)
+            .unwrap_or(false);
 
         if is_paused {
             return Err(CrowdfundError::ContractPaused);
@@ -720,7 +740,11 @@ impl CrowdfundVaultContract {
         Self::verify_admin(&env, &admin)?;
 
         // Check current pause state (single read)
-        let is_paused: bool = env.storage().instance().get(&DataKey::Paused).unwrap_or(false);
+        let is_paused: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Paused)
+            .unwrap_or(false);
 
         if !is_paused {
             return Err(CrowdfundError::ContractNotPaused);
@@ -756,7 +780,7 @@ impl CrowdfundVaultContract {
     ) -> Result<(), CrowdfundError> {
         // Verify admin (single check with helper)
         Self::verify_admin(&env, &caller)?;
-        
+
         env.deployer()
             .update_current_contract_wasm(new_wasm_hash.clone());
         events::UpgradedEvent {
@@ -777,7 +801,7 @@ impl CrowdfundVaultContract {
     ) -> Result<(), CrowdfundError> {
         // Verify admin (single check with helper)
         Self::verify_admin(&env, &current_admin)?;
-        
+
         env.storage().instance().set(&DataKey::Admin, &new_admin);
         events::AdminChangedEvent {
             old_admin: current_admin,
