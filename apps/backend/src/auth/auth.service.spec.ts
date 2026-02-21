@@ -68,7 +68,9 @@ describe('AuthService – Password Reset', () => {
     userRepository = {
       findOne: jest.fn(),
       save: jest.fn(),
-      create: jest.fn().mockImplementation((dto: Record<string, unknown>) => ({ ...dto })),
+      create: jest
+        .fn()
+        .mockImplementation((dto: Record<string, unknown>) => ({ ...dto })),
       update: jest.fn().mockResolvedValue({ affected: 1 }),
     };
 
