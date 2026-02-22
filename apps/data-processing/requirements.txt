@@ -5,12 +5,10 @@ uvicorn
 vaderSentiment
 langdetect
 apscheduler
-stellar-sdk
-pytest
 flake8
 redis
 numpy
-stellar-sdk>=8.2.0  
+stellar-sdk>=8.2.0
 scikit-learn>=1.4.0
 pandas>=2.2.0
 
@@ -21,7 +19,7 @@ alembic>=1.13.0
 psycopg2-binary>=2.9.9
 
 # For development/testing
-pytest>=7.0.0
+pytest-mock>=3.10.0
 pytest-mock>=3.10.0
 pytest-asyncio>=0.23.0
 requests-mock>=1.11.0
